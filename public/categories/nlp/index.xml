@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nlp on Even - A super concise theme for Hugo</title>
+    <link>http://localhost:1313/categories/nlp/</link>
+    <description>Recent content in nlp on Even - A super concise theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 03 Mar 2021 20:11:00 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/nlp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[논문리뷰] Attention Is All You Need</title>
+      <link>http://localhost:1313/post/python/nlp/paper/attention_is_all_you_need/</link>
+      <pubDate>Wed, 03 Mar 2021 20:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/paper/attention_is_all_you_need/</guid>
+      <description>Abstract 대부분의 sequence를 처리하는 model들은 RNN, CNN기반의 encoder-decoder model이고, 가장 성능이 좋은 model은 encoder와 decoder를</description>
+    </item>
+    
+    <item>
+      <title>[논문리뷰] Sequence to Sequence Learning with Neural Networks</title>
+      <link>http://localhost:1313/post/python/nlp/paper/sequence_to_sequence_learning_with_neural_networks/</link>
+      <pubDate>Sat, 13 Feb 2021 22:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/paper/sequence_to_sequence_learning_with_neural_networks/</guid>
+      <description>https://arxiv.org/abs/1409.3215 Abstract multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안 Introduction DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여</description>
+    </item>
+    
+    <item>
+      <title>[논문리뷰] Convolutional neural networks for sentence classification</title>
+      <link>http://localhost:1313/post/python/nlp/paper/convolutional_neural_networks_for_sentence_classification/</link>
+      <pubDate>Mon, 18 Jan 2021 22:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/paper/convolutional_neural_networks_for_sentence_classification/</guid>
+      <description>https://arxiv.org/abs/1408.5882 Abstract pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음 Introduction 이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cn</description>
+    </item>
+    
+    <item>
+      <title>BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 04. 학습</title>
+      <link>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_04/</link>
+      <pubDate>Thu, 14 Jan 2021 20:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_04/</guid>
+      <description>학습 이제 학습을 수행하는 부분을 작성하겠습니다. 이전에 작성한 config yaml을 불러옵니다. config는 OmegaConf를 이용하여 불러옵니다. 1 2 3</description>
+    </item>
+    
+    <item>
+      <title>BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 03. 모델</title>
+      <link>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_03/</link>
+      <pubDate>Sun, 10 Jan 2021 23:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_03/</guid>
+      <description>Config 설정 학습에 필요한 각종 값과 하이퍼파라미터입니다. argparse를 이용해 인자로 받을 수도 있으나, yaml로 정의하여 불러오도록 하겠습니다. 1 2 3</description>
+    </item>
+    
+    <item>
+      <title>BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 02. 데이터 전처리</title>
+      <link>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_02/</link>
+      <pubDate>Sat, 09 Jan 2021 23:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_02/</guid>
+      <description>띄어쓰기 태깅 먼저 띄어쓰기에 대한 태깅 합니다. NER과 동일한 방법으로 각 토큰을 BI로 표현해보겠습니다. word 기준이 아닌 char 기준으로 태깅을 합니다. 1 2 3 4</description>
+    </item>
+    
+    <item>
+      <title>BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비</title>
+      <link>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_01/</link>
+      <pubDate>Thu, 07 Jan 2021 23:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_01/</guid>
+      <description>Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다. 한국어 데이터셋 한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터</description>
+    </item>
+    
+  </channel>
+</rss>

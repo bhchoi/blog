@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[논문리뷰] Convolutional neural networks for sentence classification - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="" /><meta name="description" content="https://arxiv.org/abs/1408.5882 Abstract pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음 Introduction 이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cn" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/python/nlp/paper/convolutional_neural_networks_for_sentence_classification/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[논문리뷰] Convolutional neural networks for sentence classification" />
+<meta property="og:description" content="https://arxiv.org/abs/1408.5882 Abstract pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음 Introduction 이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cn" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/python/nlp/paper/convolutional_neural_networks_for_sentence_classification/" />
+<meta property="article:published_time" content="2021-01-18T22:11:00+08:00" />
+<meta property="article:modified_time" content="2021-01-18T22:11:00+08:00" />
+<meta itemprop="name" content="[논문리뷰] Convolutional neural networks for sentence classification">
+<meta itemprop="description" content="https://arxiv.org/abs/1408.5882 Abstract pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음 Introduction 이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cn">
+<meta itemprop="datePublished" content="2021-01-18T22:11:00+08:00" />
+<meta itemprop="dateModified" content="2021-01-18T22:11:00+08:00" />
+<meta itemprop="wordCount" content="1916">
+
+
+
+<meta itemprop="keywords" content="cnn,pretrained word vector," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[논문리뷰] Convolutional neural networks for sentence classification"/>
+<meta name="twitter:description" content="https://arxiv.org/abs/1408.5882 Abstract pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음 Introduction 이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cn"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">킹스날 개발 블로그</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">킹스날 개발 블로그</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[논문리뷰] Convolutional neural networks for sentence classification</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-18 </span>
+        <div class="post-category">
+            <a href="/categories/nlp/"> nlp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#model">Model</a>
+      <ul>
+        <li><a href="#regularization">Regularization</a></li>
+      </ul>
+    </li>
+    <li><a href="#datasets-and-experimental-setup">Datasets and Experimental Setup</a>
+      <ul>
+        <li><a href="#hyperparameters-and-training">Hyperparameters and Training</a></li>
+        <li><a href="#pre-trained-word-vectors">Pre-trained Word Vectors</a></li>
+        <li><a href="#model-variations">Model Variations</a></li>
+      </ul>
+    </li>
+    <li><a href="#results-and-discussion">Results and Discussion</a>
+      <ul>
+        <li><a href="#multichannel-vs-single-channel-models">Multichannel vs. Single Channel Models</a></li>
+        <li><a href="#static-vs-non-static-representations">Static vs. Non-static Representations</a></li>
+        <li><a href="#further-observations">Further Observations</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><a href="https://arxiv.org/abs/1408.5882" target="_blank"><a href="https://arxiv.org/abs/1408.5882">https://arxiv.org/abs/1408.5882</a></a></p>
+</blockquote>
+<h1 id="abstract">Abstract</h1>
+<p>pretraind word vector와 CNN을 sentence classification task에 적용하여 좋은 결과를 얻음</p>
+<p> </p>
+<h1 id="introduction">Introduction</h1>
+<p>이번 논문에서는, unsupervised neural language model을 통해 학습한 word vector를 이용하여 cnn을 학습한다.<br>
+word vector는 google news 천억 단어로 학습되었다. (<a href="https://code.google.com/p/word2vec" target="_blank"><a href="https://code.google.com/p/word2vec">https://code.google.com/p/word2vec</a></a>)<br>
+먼저 word vector는 static하게 놔두고, 다른 파라미터만 학습을 하였다.<br>
+간단한 튜닝을 통해서 많은 benchmark에서 좋은 성능을 얻었다.</p>
+<p> </p>
+<h1 id="model">Model</h1>
+<p><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/figure_1.png" alt="figure_1.png"></p>
+<p>모델 아키텍쳐는 Collobert의 CNN 아키텍쳐에서 조금 변형한 것이다.</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_1.png"></p>  
+x_i는 문장에서 i번째 단어의 word vector이다.  
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_2.png"></p>  
+길이가 n인 문장은 1부터 n까지의 word vector의 합(concatenation)으로 표현된다.  
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_3.png"></p>
+<p>CNN에는 새로운 feature를 만들어내는 filter w가 있고, h개의 단어에 대한 window이다.</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_4.png"></p>
+<p>예를 들어, c_i는 윈도우 크기 h에 대한 x_i:i+h-1의 feature이다.<br>
+b는 bias, f는 tanh같은 non linear function이다.</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_5.png"></p>
+<p>이 filter를 이용해 문장의 feature map c를 만들어낸다.</p>
+<p>추출한 feature map에는 max-over-time pooling operation을 적용한다. 이는 가장 중요한 feature를 추출하기 위함이다.</p>
+<p>또한 여러개의 filter를 이용해, 여러개의 feature를 추출하고, fully connected softmax layer에 전달하여 probability distribution을 구한다.</p>
+<p>모델의 변형 중 하나로, word vector에 대해 2개의 channel을 적용해보았다.</p>
+<p>첫번째는 pretrained word vector를 static하게 놔두는 것이고, 두번째는 pretrained word vector에 fine tuning을 하는 것이다.</p>
+<p>각 filter는 2개의 channel에 대해 적용이 되고, feature map c로 합쳐진다.</p>
+<h2 id="regularization">Regularization</h2>
+<p>regularization을 위해 l2 norms를 이용한 dropout을 적용한다.</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_6.png"></p>
+<p>m의 filter에서 추출한 z에 대해</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_7.png"></p>
+<p>dropout을 적용한 수식이다. r은 masking vector이며, 확률 p를 이용한 random 변수이다.</p>
+<p>train 단계에서는 unmasked unit에 대해서만 학습을 한다.</p>
+<p align="center"><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/equation_8.png"></p>
+<p>test 단계에서는 학습된 weight vector에 대해 p만큼 scale하여 사용한다.</p>
+<p>추가적으로 l2 norms를 적용하여, l2 norm을 적용한 w가 특정 constraint 값보다 클때만 적용하였다.</p>
+<p> </p>
+<h1 id="datasets-and-experimental-setup">Datasets and Experimental Setup</h1>
+<p>다양한 benchmark에 대해 테스트를 진행하였다.</p>
+<p><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/table_1.png" alt="table_1.png"></p>
+<h2 id="hyperparameters-and-training">Hyperparameters and Training</h2>
+<p>모든 데이터셋에 공통적으로 적용된 하이퍼파라미터</p>
+<ul>
+<li>relu</li>
+<li>filter window size(h) : 3, 4, 5</li>
+<li>100 feature map</li>
+<li>dropout rate(p) : 0.5</li>
+<li>l2 constraint(s) : 3</li>
+<li>mini batch size : 50</li>
+</ul>
+<p>dev셋에 대한 early stopping은 적용하지 않았고, dev셋이 없는 경우는 training data에서 10%를 선택하여 사용하였다.<br>
+shuffled mini batch에 대해 adadelta를 이용하여 학습하였다.</p>
+<h2 id="pre-trained-word-vectors">Pre-trained Word Vectors</h2>
+<p>pretrained word vector로 word2vec을 사용하였다.</p>
+<p>구글 뉴스 중 천억개의 단어로 학습이 되었고, 300 차원이며 cbow 방식으로 학습되었다.</p>
+<p>pretrained word에 없는 단어를 랜덤하게 초기화하였다.</p>
+<h2 id="model-variations">Model Variations</h2>
+<ul>
+<li>CNN-rand : 모든 단어는 랜덤하게 초기화하였다.</li>
+<li>CNN-static : word2vec을 이용하였고, word vector는 static하게 유지되고, 다른 파라미터만 학습하였다.</li>
+<li>CNN-non-static : word2vec을 이용하였고, word vector는 fine tuning되었다.</li>
+<li>CNN-multichannel : CNN-static과 CNN-non-static을 합친 모델이다.</li>
+</ul>
+<p> </p>
+<h1 id="results-and-discussion">Results and Discussion</h1>
+<p><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/table_2.png" alt="table_2.png"></p>
+<p>CNN-rand는 좋지 않았지만, pretrained vector를 이용한 방법은 좋은 성능을 보였다.</p>
+<p>전체 데이터셋에 대해 pretrained vector를 사용하는 것이 성능이 좋으며, 보편적으로 사용될 수 있음을 보여주었다.</p>
+<h2 id="multichannel-vs-single-channel-models">Multichannel vs. Single Channel Models</h2>
+<p>multichannel이 single channel 보다 더 좋을거라고 기대했지만, single channel이 더 좋은 성능을 보였다. 특히 작은 데이터셋에서 single channel이 더 좋았다.</p>
+<p>하지만 multichannel이 더 좋은 성능을 보인 task도 있으며, fine tuning 과정을 정규화하여 더 좋은 성능을 낼 수 있다.</p>
+<h2 id="static-vs-non-static-representations">Static vs. Non-static Representations</h2>
+<p><img src="/images/nlp/paper/Convolutional_neural_networks_for_sentence_classification/table_3.png" alt="table_3.png"></p>
+<p>non-static channel을 통해 특정 task에 더 specific하게 fine tuning 할 수 있다.</p>
+<p>예를 들어, word2vec에서 bad는 good이랑 가깝지만, SST-2에서는 good이랑 가깝지 않다.</p>
+<p>pretrained word에 포함되지 않아 랜덤하게 초기화된 단어들도 fine tuning을 통해 더욱 의미있는 표현으로 학습이 되었다.</p>
+<p>느낌표는 과장된 표현(effusive)과 연관이 있고하고, 쉼표는 연결(conjunctive)의 의미가 있다.</p>
+<h2 id="further-observations">Further Observations</h2>
+<ul>
+<li>동일한 아키텍쳐인 Max-TDNN과 비교하여 더 좋은 성능을 보였다. 더 많은 filter와 feature map인 것으로 추정한다.</li>
+<li>dropout은 좋은 regularizer라는 것을 증명했다. 2~4%의 성능향상을 보였다.</li>
+<li>pretrained word에 포함되지 않은 단어에 대해 랜덤하게 초기화할때, pretrained vector와 동일한 분포로 초기화하면 성능 향상이 있었다.</li>
+<li>Collobert가 학습한 pretrained word vector에 대해 실험을 해보았는데, word2vec이 더 좋았다. 아키텍처 문제인지 천억 단어의 구글 데이터셋 영향인지 모르겠다.</li>
+<li>Adadelta는 Adagrad와 비슷한 결과를 보였으나, 더 빨리 학습이 진행되었다.</li>
+</ul>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cnn/">cnn</a>
+          <a href="/tags/pretrained-word-vector/">pretrained word vector</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python/nlp/paper/sequence_to_sequence_learning_with_neural_networks/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[논문리뷰] Sequence to Sequence Learning with Neural Networks</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/python/nlp/dev/bert_korean_spacing_04/">
+            <span class="next-text nav-default">BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 04. 학습</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:shinejk.qoo@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/bhchoi" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

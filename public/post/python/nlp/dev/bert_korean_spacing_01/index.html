@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비 - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="" /><meta name="description" content="Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다. 한국어 데이터셋 한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_01/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비" />
+<meta property="og:description" content="Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다. 한국어 데이터셋 한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/python/nlp/dev/bert_korean_spacing_01/" />
+<meta property="article:published_time" content="2021-01-07T23:11:00+08:00" />
+<meta property="article:modified_time" content="2021-01-07T23:11:00+08:00" />
+<meta itemprop="name" content="BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비">
+<meta itemprop="description" content="Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다. 한국어 데이터셋 한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터">
+<meta itemprop="datePublished" content="2021-01-07T23:11:00+08:00" />
+<meta itemprop="dateModified" content="2021-01-07T23:11:00+08:00" />
+<meta itemprop="wordCount" content="1349">
+
+
+
+<meta itemprop="keywords" content="bert,spacing,띄어쓰기," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비"/>
+<meta name="twitter:description" content="Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다. 한국어 데이터셋 한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">킹스날 개발 블로그</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">킹스날 개발 블로그</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 01. 데이터 준비</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-07 </span>
+        <div class="post-category">
+            <a href="/categories/nlp/"> nlp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#한국어-데이터셋">한국어 데이터셋</a></li>
+        <li><a href="#데이터셋-전처리">데이터셋 전처리</a></li>
+        <li><a href="#reference">Reference</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Pretrained BERT, PYTORCH를 이용해 한국어 띄어쓰기 모델을 만들어 보겠습니다.</p>
+<h2 id="한국어-데이터셋">한국어 데이터셋</h2>
+<p>한국어 띄어쓰기 모델을 학습하기 위해서는 띄어쓰기가 잘 되어 있는 데이터셋이 필요합니다.<br>
+세종 코퍼스, 모두의 말뭉치 처럼 오픈 데이터셋도 있고, 네이버 뉴스 같은 것을 직접 크롤링 할 수도 있습니다.<br>
+이번에는 최근에 공개된 모두의 말뭉치 중에서 신문 말뭉치를 이용해보겠습니다.</p>
+<blockquote>
+<p><a href="https://corpus.korean.go.kr" target="_blank">모두의 말뭉치</a>는 말뭉치 신청 후 승인이 되면 다운로드가 가능합니다.</p>
+</blockquote>
+<br/>
+<h2 id="데이터셋-전처리">데이터셋 전처리</h2>
+<p>말뭉치를 다운로드 받으면 제목, 기자, 날짜, 토픽, 내용 등이 json 형태로 되어 있어 파싱 후 사용해야 됩니다.<br>
+직접 파싱을 할 수도 있으나, 감사하게도 <a href="https://github.com/ko-nlp/Korpora" target="_blank">Korpora</a>라는 라이브러리를 만들어 주셔서 편하게 데이터셋을 이용할 수 있습니다.</p>
+<p> </p>
+<p>그럼 모두의 말뭉치 데이터셋을 로드해보겠습니다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">Korpora</span> <span class="kn">import</span> <span class="n">Korpora</span>
+
+<span class="c1"># root_dir에 말뭉치 경로를 입력</span>
+<span class="n">modu_news</span> <span class="o">=</span> <span class="n">Korpora</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;modu_news&#34;</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="s2">&#34;./data/nikl_newspaper&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>Korpora에서 여러가지 오픈 데이터셋을 이용할 수 있습니다. 데이터셋을 직접 다운로드도 가능하나, 모두의 말뭉치는 승인절차가 필요하므로 다운로드는 제공하지 않습니다.</p>
+</blockquote>
+<p> </p>
+<p>불러온 데이터를 출력해보겠습니다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">&gt;&gt; modu_news.train<span class="o">[</span>0<span class="o">]</span>
+ModuNewsLight<span class="o">(</span><span class="nv">document_id</span><span class="o">=</span><span class="s1">&#39;NIRW1900000001.1&#39;</span>, <span class="nv">title</span><span class="o">=</span><span class="s1">&#39;오마이뉴스 2009년 기사&#39;</span>, <span class="nv">paragraph</span><span class="o">=</span><span class="s1">&#39;대통령, 시장 방문만 하지...&#39;</span>,<span class="o">)</span>
+
+&gt;&gt; modu_news.get_all_texts<span class="o">()</span>
+<span class="o">[</span><span class="s1">&#39;대통령, 시장 방문만 하지...&#39;</span>, ...<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>신문기사이기 때문에 매우 정제된 데이터이나, 간단한 전처리를 해보겠습니다.</p>
+<ul>
+<li>따옴표 제거
+<ul>
+<li>내용에 큰/작은 따옴표가 굉장히 많기 때문에 따옴표만 제거해주겠습니다.</li>
+</ul>
+</li>
+<li>개행문자로 문장 분리
+<ul>
+<li>문장들이 개행문자(\n)로 연결되어 하나의 str로 되어 있어, 개행문자로 문장을 분리하겠습니다.</li>
+</ul>
+</li>
+<li>문장 분리
+<ul>
+<li>개행문자 없이 여러 문장이 하나의 str로 되어 있는 경우도 있어, 문장을 분리하겠습니다.</li>
+<li>마찬가지로 매우 감사하게 사용하고 있는 <a href="https://github.com/hyunwoongko/kss" target="_blank">kss</a> 라이브러리를 사용해 문장을 분리하겠습니다.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">kss</span>
+
+<span class="n">splited_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">modu_news</span><span class="o">.</span><span class="n">get_all_texts</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">sentences</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;&#39;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\&#34;</span><span class="s2">&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+    <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+        <span class="n">splited_sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">kss</span><span class="o">.</span><span class="n">split_sentences</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">&gt;&gt; splited_sentences
+<span class="o">[</span><span class="s2">&#34;대통령, 시장 방문만 하지 말고 실천해달라&#34;</span>, <span class="s2">&#34;2008년의 마지막 새벽, 언론의 카메라는 서울 여의도를 향했다. 방송법 등 주요쟁점 법안이 상정될 국회 본회의장을 두고 여야 의원들의 전쟁을 기다리고 있었던 것.&#34;</span>, ...<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>kss로 자르기 전 문장 개수가 2,693,991개 입니다.<br>
+제가 가진 장비로 2,693,991 문장에 대해 전처리를 하면 3시간이 소요됩니다.<br>
+실습을 위해서는 문장 개수를 줄여서 해도 되지만, 병렬처리를 통해 시간을 단축해보겠습니다.<br>
+python multiprocessing을 사용하는 대신, 요즘 많이 사용하는 <a href="https://docs.ray.io/en/master/index.html" target="_blank">Ray</a>를 이용해보겠습니다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">ray</span>
+<span class="kn">import</span> <span class="nn">kss</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="n">ray</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="nd">@ray.remote</span>
+<span class="k">def</span> <span class="nf">split_sentences</span><span class="p">(</span><span class="n">corpus</span><span class="p">):</span>
+    <span class="n">splited_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">sentences</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
+        <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;&#39;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+        <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\&#34;</span><span class="s2">&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+        <span class="n">sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+            <span class="n">splited_sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">kss</span><span class="o">.</span><span class="n">split_sentences</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">splited_sentences</span>
+
+<span class="k">def</span> <span class="nf">chunker_list</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">size</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+
+<span class="c1"># 프로세스 개수</span>
+<span class="n">process_num</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1"># 프로세스 개수만큼 corpus 분리</span>
+<span class="n">sentences_chunk</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunker_list</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">process_num</span><span class="p">))</span>
+
+<span class="c1"># ray를 이용해 멀티프로세싱</span>
+<span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">split_sentences</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="n">sentences_chunk</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">process_num</span><span class="p">)]</span>
+
+<span class="c1"># 결과를 1-d로 합치기</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">ray</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">futures</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>최종적으로 6,138,136 문장으로 분리 되었습니다.</p>
+<p>모델 학습을 위해 train, validation, test로 분리하겠습니다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">test_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>각 데이터셋을 파일로 저장 후 사용하겠습니다.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">write_dataset</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;data/nikl_newspaper&#34;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&#34;w&#34;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&#34;utf-8&#34;</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">write_dataset</span><span class="p">(</span><span class="s2">&#34;train.txt&#34;</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+<span class="n">write_dataset</span><span class="p">(</span><span class="s2">&#34;val.txt&#34;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+<span class="n">write_dataset</span><span class="p">(</span><span class="s2">&#34;test.txt&#34;</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>이상으로 한국어 띄어쓰기 모델 개발을 위한 데이터셋 준비를 마쳤습니다.</p>
+<p> </p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://corpus.korean.go.kr" target="_blank">모두의 말뭉치</a></li>
+<li><a href="https://github.com/ko-nlp/Korpora" target="_blank">Korpora</a></li>
+<li><a href="https://github.com/hyunwoongko/kss" target="_blank">kss</a></li>
+<li><a href="https://docs.ray.io/en/master/index.html" target="_blank">Ray</a></li>
+</ul>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/bert/">bert</a>
+          <a href="/tags/spacing/">spacing</a>
+          <a href="/tags/%EB%9D%84%EC%96%B4%EC%93%B0%EA%B8%B0/">띄어쓰기</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python/nlp/dev/bert_korean_spacing_02/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">BERT를 이용한 한국어 띄어쓰기 모델 만들기 - 02. 데이터 전처리</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/python/dictionary_default_value/">
+            <span class="next-text nav-default">[Python] dictionary에 default value 사용하기</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:shinejk.qoo@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/bhchoi" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

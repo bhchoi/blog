@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[논문리뷰] Sequence to Sequence Learning with Neural Networks - Even - A super concise theme for Hugo</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="" /><meta name="description" content="https://arxiv.org/abs/1409.3215 Abstract multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안 Introduction DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.80.0 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/python/nlp/paper/sequence_to_sequence_learning_with_neural_networks/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.2e81bbed97b8b282c1aeb57488cc71c8d8c8ec559f3931531bd396bf31e0d4dd.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[논문리뷰] Sequence to Sequence Learning with Neural Networks" />
+<meta property="og:description" content="https://arxiv.org/abs/1409.3215 Abstract multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안 Introduction DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/python/nlp/paper/sequence_to_sequence_learning_with_neural_networks/" />
+<meta property="article:published_time" content="2021-02-13T22:11:00+08:00" />
+<meta property="article:modified_time" content="2021-02-13T22:11:00+08:00" />
+<meta itemprop="name" content="[논문리뷰] Sequence to Sequence Learning with Neural Networks">
+<meta itemprop="description" content="https://arxiv.org/abs/1409.3215 Abstract multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안 Introduction DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여">
+<meta itemprop="datePublished" content="2021-02-13T22:11:00+08:00" />
+<meta itemprop="dateModified" content="2021-02-13T22:11:00+08:00" />
+<meta itemprop="wordCount" content="2100">
+
+
+
+<meta itemprop="keywords" content="lstm,seq2seq," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[논문리뷰] Sequence to Sequence Learning with Neural Networks"/>
+<meta name="twitter:description" content="https://arxiv.org/abs/1409.3215 Abstract multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안 Introduction DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">킹스날 개발 블로그</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">킹스날 개발 블로그</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[논문리뷰] Sequence to Sequence Learning with Neural Networks</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-13 </span>
+        <div class="post-category">
+            <a href="/categories/nlp/"> nlp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#model">Model</a></li>
+    <li><a href="#experiments">Experiments</a>
+      <ul>
+        <li><a href="#dataset-details">Dataset details</a></li>
+        <li><a href="#decoding-and-rescoring">Decoding and Rescoring</a></li>
+        <li><a href="#reversing-the-source-sentences">Reversing the Source Sentences</a></li>
+        <li><a href="#training-details">Training details</a></li>
+        <li><a href="#parallelization">Parallelization</a></li>
+        <li><a href="#experimental-results">Experimental Results</a></li>
+        <li><a href="#performance-on-long-sentences">Performance on long sentences</a></li>
+        <li><a href="#model-analysis">Model Analysis</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><a href="https://arxiv.org/abs/1409.3215" target="_blank"><a href="https://arxiv.org/abs/1409.3215">https://arxiv.org/abs/1409.3215</a></a></p>
+</blockquote>
+<h1 id="abstract">Abstract</h1>
+<p>multi-layer LSTM 구조를 이용하여 sequence를 학습하는 방법을 제안</p>
+<p> </p>
+<h1 id="introduction">Introduction</h1>
+<p>DNN은 speech recognotion, visual object recognition과 같은 어려운 문제들에 대해 매우 좋은 성능을 보여 왔다. 하지만 DNN은 input과 target이 고정된 차원일 경우에만 적용이 가능하기 때문에, machine translation이나 question answering과 같이 길이가 미리 주어지지 않는 문제에 대해서는 적용에 어려움이 있다.</p>
+<p>LSTM 구조를 이용하면 sequence to sequence 문제를 해결 할 수 있다. 하나의 LSTM에서는 매 timestep마다 input sequence를 읽어서 vector로 표현하고, 다른 LSTM에서는 vector로 부터 output sequence를 추출하는 방식이다.
+<img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/figure_1.png" alt="figure_1.png">
+ </p>
+<h1 id="model">Model</h1>
+<p>RNN은 input sequence (x_1, &hellip;, x_T)가 주어졌을때, output sequence (y_1, &hellip;, y_T)를 계산한다.</p>
+<p>input과 output sequence의 길이가 다르거나, 복잡한 관계를 가질때는 적용하기가 어렵다.</p>
+<p>이를 해결하는 가장 간단한 방법은, 하나의 RNN은 input sequence를 고정된 크기의 vector로 mapping하고, 또 다른 RNN이 이 vector을 target sequence로 mapping 하는 방법이다.</p>
+<p>이 방법으로 RNN이 정상적으로 동작은 하지만, long term dependency 문제로 인해 학습이 잘 되지 않을 수 있다.</p>
+<p>LSTM은 이 long term dependency를 잘 학습할 수 있는 구조이다.</p>
+<p>LSTM의 목적은 input sequence (x_1, &hellip;, x_T)와 output sequence (y_1, &hellip;, y_T')의 길이가 다를 때, conditional probability p(y_1, . . . , y_T′ | x_1, . . . , x_T)를 측정하는 것이다.</p>
+<p>LSTM은 input sequence (x_1, &hellip;, x_T)를 이용해 고정된 크기의 v를 구한다. input sequence (x_1, &hellip;, x_T)는 LSTM의 마지막 hidden state 값이다.</p>
+<p>그리고 LSTM을 이용하여 y_1, &hellip;, y_T&rsquo;의 확률을 구한다. 수식은 아래와 같다.</p>
+<p align="center"><img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/equation_1.png"></p>
+<p>각각의 p(y_t|v, y_1, . . . , y_t−1)는 전체 vocabulary에 있는 단어를 통해 softmax로 표현된다.</p>
+<p>각 문장은 &ldquo;<EOS>&rdquo; 심볼로 끝이나며, 모델은 전체 sequence 길이에 대한 분포를 구할 수 있다.</p>
+<p>Figure1에서 표현된 것처럼, input &ldquo;A&rdquo;, &ldquo;B&rdquo;, &ldquo;C&rdquo;, &ldquo;<EOS>&ldquo;를 계산하고, 이를 이용해 output &ldquo;W&rdquo;, &ldquo;X&rdquo;, &ldquo;Y&rdquo;, &ldquo;Z&rdquo;, &ldquo;<EOS>&ldquo;를 계산한다.</p>
+<p>실제 모델은 다른 점이 3가지 있다. 첫째는 input과 output을 위한 LSTM이 각각 존재한다. 둘째는 4개의 LSTM를 중첩하여 사용하였다. 셋째는 sequence word 순서를 뒤집어서 input으로 사용하였다.</p>
+<p> </p>
+<h1 id="experiments">Experiments</h1>
+<h2 id="dataset-details">Dataset details</h2>
+<p>WMT'14(english to french) dataset을 사용하였다. 그 중 12M개의 문장을 학습에 사용하였다.</p>
+<p>source 언어에서는 160,000개의 단어, target 언어에서는 80,000개의 단어를 사용하였다.</p>
+<h2 id="decoding-and-rescoring">Decoding and Rescoring</h2>
+<p>이 실험의 핵심은 크고 깊은 LSTM을 이용해 많은 sentence pair를 학습하는 것이다. source sentence S에 대해 correct translation T의 log probability를 최대화하도록 학습을 하였다.</p>
+<p align="center"><img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/equation_2.png"></p>
+S는 training set이다. 학습이 완료되면, LSTM을 통해 가장 확률이 높은 translation을 출력한다.
+<p align="center"><img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/equation_3.png"></p>
+simple left-right beam search를 통해 가장 확률이 높은 translation을 찾는다. beam이 1일 때도 성능이 좋으며, 2일 때는 거의 가장 좋은 성능을 낸다.
+<h2 id="reversing-the-source-sentences">Reversing the Source Sentences</h2>
+<p>LSTM으로 long term dependency 문제를 해결할 수 있지만, source sentence를 뒤집어서 input으로 사용하면 더 좋은 결과를 낼 수 있다. test perplexity는 5.8에서 4.7로 낮아지고, BLEU score는 25.9에서 30.6으로 증가하였다.</p>
+<p>이 현상에 대해 정확하게 설명할 수 없지만, source sentence를 뒤집음으로써, source sentece의 앞쪽에 있는 몇몇 단어들이 target sentece와 가까워지기 때문에 minimal time lag 문제가 해결되고 성능이 향상된 것으로 보고 있다.</p>
+<h2 id="training-details">Training details</h2>
+<ul>
+<li>4개의 LSTM layer
+<ul>
+<li>LSTM의 layer를 추가할때마다 perplexity가 10% 가까이 줄어들었다.</li>
+</ul>
+</li>
+<li>1,000개의 cell</li>
+<li>1,000 dimensional word embedding</li>
+<li>160,000개의 input vocabulary</li>
+<li>80,000개의 output vocabulary</li>
+<li>softmax</li>
+<li>LSTM의 모든 파라미터는 -0.08에서 0.08 사이의 uniform distribution으로 초기화</li>
+<li>momentum없이 SGD 사용. learning rate는 0.7로 고정. 5 epoch 이후에는 0.5epoch마다 learning rate를 절반으로 줄임. 총 7.5 epoch 수행</li>
+<li>batch size는 128 사용</li>
+<li>LSTM을 사용하면 vanishing gradient 문제는 줄어들지만, exploding gradient 문제가 있음. 그래서 gradient norm에 hard constraint를 적용. gradient 값이 5보다 크면, 5로 고정한다.</li>
+<li>각각의 sentence는 길이가 다르다. 대부분은 짧고, 일부는 길다. minibatch에는 짧은 문장이 많이 들어가고, 긴 문장은 일부만 들어간다. 길이가 다름에 따른 학습에 비효율이 존재한다. 그래서 비슷한 길이의 sentence가 minibatch에 들어가게 조정하였고, 학습 속도가 2배 빨라졌다.</li>
+</ul>
+<h2 id="parallelization">Parallelization</h2>
+<p>하나의 GPU에서 초당 1,700개의 word를 처리할 수 있었는데, 이는 굉장히 느린 속도다. 그래서 8개의 GPU를 이용하여 병렬처리를 적용하였다. 각각의 layer는 서로 다른 GPU에서 처리되고, 처리가 완료되면 다음 GPU로 전달되어 처리된다. 나머지 4개의 GPU는 softmax를 병렬처리하는데 사용되었다. 이렇게 구현하여 초당 6,300개의 word를 처리할 수 있었고, 학습하는데 총 10일 가량이 소요되었다.</p>
+<h2 id="experimental-results">Experimental Results</h2>
+<p><img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/table_1.png" alt="table_1.png">
+<img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/table_2.png" alt="table_2.png"></p>
+<h2 id="performance-on-long-sentences">Performance on long sentences</h2>
+<p>LSTM이 긴 문장도 잘 처리하는 것을 볼 수 있다.
+<img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/figure_3.png" alt="figure_3.png"></p>
+<h2 id="model-analysis">Model Analysis</h2>
+<p>본 모델의 장점 중 하나는 sequence word를 고정된 차원의 vector로 표현할 수 있다는 것이다.</p>
+<p>학습된 표현을 visualize하면 아래와 같다.
+<img src="/images/nlp/paper/sequence_to_sequence_learning_with_neural_networks/figure_2.png" alt="figure_2.png"></p>
+<p>단어의 순서에는 민감하고, 능동태를 수동태로 대체하는데는 둔감한 것을 볼 수 있다.</p>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/lstm/">lstm</a>
+          <a href="/tags/seq2seq/">seq2seq</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python/nlp/paper/attention_is_all_you_need/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[논문리뷰] Attention Is All You Need</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/python/nlp/paper/convolutional_neural_networks_for_sentence_classification/">
+            <span class="next-text nav-default">[논문리뷰] Convolutional neural networks for sentence classification</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:shinejk.qoo@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/bhchoi" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

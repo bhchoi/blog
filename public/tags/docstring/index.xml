@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docstring on Even - A super concise theme for Hugo</title>
+    <link>http://localhost:1313/tags/docstring/</link>
+    <description>Recent content in docstring on Even - A super concise theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 02 May 2020 23:11:00 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/docstring/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Python] Annotation</title>
+      <link>http://localhost:1313/post/python/annotation/</link>
+      <pubDate>Sat, 02 May 2020 23:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/annotation/</guid>
+      <description>Annotation이란? annotation은 function의 parameter와 return value에 대한 hint를 주는 것이다. 강제하는 것이 아</description>
+    </item>
+    
+    <item>
+      <title>[Python] Docstring</title>
+      <link>http://localhost:1313/post/python/docstring/</link>
+      <pubDate>Sat, 02 May 2020 23:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/docstring/</guid>
+      <description>Docstring이란? docstring은 module, function, class, method에 대한 문서화 작업을 말한다. docstring은 __doc__ special attribute에 저장된다</description>
+    </item>
+    
+  </channel>
+</rss>

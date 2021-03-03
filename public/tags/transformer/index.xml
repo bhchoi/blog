@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>transformer on Even - A super concise theme for Hugo</title>
+    <link>http://localhost:1313/tags/transformer/</link>
+    <description>Recent content in transformer on Even - A super concise theme for Hugo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 03 Mar 2021 20:11:00 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/transformer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[논문리뷰] Attention Is All You Need</title>
+      <link>http://localhost:1313/post/python/nlp/paper/attention_is_all_you_need/</link>
+      <pubDate>Wed, 03 Mar 2021 20:11:00 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/python/nlp/paper/attention_is_all_you_need/</guid>
+      <description>Abstract 대부분의 sequence를 처리하는 model들은 RNN, CNN기반의 encoder-decoder model이고, 가장 성능이 좋은 model은 encoder와 decoder를</description>
+    </item>
+    
+  </channel>
+</rss>
