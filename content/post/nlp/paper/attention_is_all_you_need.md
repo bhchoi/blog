@@ -2,7 +2,7 @@
 title: "[논문리뷰] Attention Is All You Need"
 date: 2021-03-03 20:11:00 +0800
 categories: [nlp]
-tags: [attentio, transformer]
+tags: [attention, transformer]
 toc: true
 ---
 
