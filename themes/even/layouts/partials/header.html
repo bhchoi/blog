@@ -1,5 +1,5 @@
 <div class="logo-wrapper">
-  <a href="{{ " /" | relLangURL }}" class="logo">
+  <a href="{{ "/" | relLangURL }}" class="logo">
     {{- if .Site.Params.logoTitle -}}
     {{ .Site.Params.logoTitle }}
     {{- else -}}
@@ -9,7 +9,7 @@
 </div>
 
 {{ partial "header/language-selector.html" . }}
-{{ partial "mathjax_support.html" . }}
+
 
 <nav class="site-navbar">
   <ul id="menu" class="menu">
@@ -20,3 +20,5 @@
     {{- end }}
   </ul>
 </nav>
+
+{{ partial "mathjax_support.html" . }}
