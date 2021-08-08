@@ -33,13 +33,13 @@ ublabeled data에서 중요한 정보를 학습하는 것에는 2가지 어려�
 
 unsupervised corpus의 tokens에 대해 likelihood를 최대화하는 standard language modeling objective를 사용한다.
 
-<p align="center"><img src="/images/nlp/paper/gpt1/eq_4.png"></p>
+<p align="center"><img src="/images/nlp/paper/gpt1/eq_1.png"></p>
 
 k는 context window size이며, P는 neural network의 parameter Θ를 사용하여 모델링된다. parameter는  stochastic gradient descent를 사용해 학습한다.
 
 multi-layer Transformer decoder를 아키텍처로 사용한다. 먼저 input context token에 대해 multi headed self-attention을 수행하고, position-wise feedforward layer를 통해 target token에 대한 output distribution을 생성한다.
 
-<p align="center"><img src="/images/nlp/paper/gpt1/eq_4.png"></p>
+<p align="center"><img src="/images/nlp/paper/gpt1/eq_2.png"></p>
 
 $U = (u_-k,...,u_-1)$은 tokens의 context vector이며, n은 layer의 개수, $W_e$는 token embedding matrix, $W_p$는 position embedding matrix이다.
 
@@ -50,7 +50,7 @@ pre-training 이후 target task에 대해 parameter fine-tuning 단계를 진행
 
 input은 마지막 transformer block의 activation h를 얻기 위해 pre-trained model에 입력되고, 추가적인 linear output layer를 통해 y를 예측한다.
 
-<p align="center"><img src="/images/nlp/paper/gpt1/eq_4.png"></p>
+<p align="center"><img src="/images/nlp/paper/gpt1/eq_3.png"></p>
 
 이렇게 함으로써 아래 objective를 최대화 할 수 있다.
 
@@ -59,7 +59,7 @@ input은 마지막 transformer block의 activation h를 얻기 위해 pre-traine
 language modeling을 보조지표로(auxiliary objective) 포함하는 것이 fine-tuning 단계에서 generalization을 향상시키고 convergence를 가속화한다는 것을 발견하였다.
 
 weight λ를 이용해 아래 수식에 대해 최적화를 수행한다.
-<p align="center"><img src="/images/nlp/paper/gpt1/eq_4.png"></p>
+<p align="center"><img src="/images/nlp/paper/gpt1/eq_5.png"></p>
 
 종합하자면 fine-tuning 단계에서 추가되는 parameters는 $W_y$와 embeddings를 위한 delimiter tokens이다.
 
